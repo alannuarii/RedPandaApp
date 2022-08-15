@@ -1,0 +1,52 @@
+{% extends 'layouts/base.html' %} {% block title %}
+<title>{{title}}</title>
+{% endblock title %} {% block content %}
+<div class="nav-scroller bg-body shadow-sm">
+  <nav class="nav" aria-label="Secondary navigation">
+    <div class="nav-link" data-bs-toggle="modal" data-bs-target="#modal-upload-data-feeder"><i class="bi-upload"></i> Upload</div>
+    <a class="nav-link" href="#">
+      Friends
+      <span class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
+    </a>
+    <a class="nav-link" href="#">Explore</a>
+    <a class="nav-link" href="#">Suggestions</a>
+    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="#">Link</a>
+  </nav>
+</div>
+<main class="container-fluid home">
+  <div class="row">
+    <div class="col"><h1>TES</h1></div>
+  </div>
+</main>
+<!-- Modal Upload Data-->
+<div class="modal fade" id="modal-upload-data-feeder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload File Beban Feeder</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data" class="d-flex justify-content-end py-3">
+          {% csrf_token %}
+          <label for=""></label>
+          <input type="file" class="form-control" name="feeder" />
+          <input type="submit" class="btn btn-primary ms-2" value="Upload" />
+        </form>
+        <div>
+          <button class="btn btn-secondary">Download File</button>
+          <p class="fw-bolder mb-0 mt-2">Catatan:</p>
+          <ul>
+            <li>Ekstensi file harus Excel (.xlsx)</li>
+            <li>Dll</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

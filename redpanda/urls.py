@@ -7,5 +7,8 @@ from redpanda import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
+    path('', views.home, name='home'),
+    path('feeder/forecast', views.forecast_feeder, name='forecast_feeder'),
+    path('feeder/data', views.data_feeder, name='data_feeder'),
     
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
