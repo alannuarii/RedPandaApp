@@ -53,8 +53,6 @@ def data_feeder(request):
     feeder_sql.insert(20,'Sub Total Lesabe',pltd_lesabe)
     feeder_sql.insert(21,'Total',total)
 
-    
-
     context={
         'title':'Data Feeder | RedPanda',
         'rows':list(feeder_sql.values.tolist()),
