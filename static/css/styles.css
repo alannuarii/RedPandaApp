@@ -7,15 +7,6 @@ body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
 }
 
-body {
-  padding-top: 75px;
-}
-
-main {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
 /* PRELOADER */
 #preloader {
   position: fixed;
@@ -100,10 +91,11 @@ main {
   color: #343a40;
 }
 .nav-scroller {
-  position: relative;
-  z-index: 2;
+  position: fixed;
+  /* z-index: 2; */
   height: 2.75rem;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
+  margin-top: 73px;
 }
 .nav-scroller .nav {
   display: flex;
@@ -117,4 +109,18 @@ main {
 }
 .nav-scroller .nav-link {
   cursor: pointer;
+}
+
+/* HOME */
+
+/* FEEDER */
+/* Data Feeder */
+.data-feeder {
+  padding-top: 130px;
+}
+.data-feeder {
+  width: 100%;
+}
+.data-feeder .beban-feeder {
+  font-size: 12px;
 }

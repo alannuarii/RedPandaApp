@@ -41,7 +41,22 @@ def data_feeder(request):
         except Exception as error:
             print(error)
     
+    feeder_sql = pd.read_sql('redpanda_feeder', con=engine).iloc[0:24,2:]
+    total = feeder_sql.iloc[0:24,1:16].sum(axis=1)
+    pltd_tahuna = feeder_sql.iloc[0:24,1:7].sum(axis=1)
+    pltd_petta = feeder_sql.iloc[0:24,7:11].sum(axis=1)
+    pltd_tamako = feeder_sql.iloc[0:24,11:15].sum(axis=1)
+    pltd_lesabe  = feeder_sql.iloc[0:24,15:19].sum(axis=1)
+    feeder_sql.insert(7,'Sub Total Tahuna',pltd_tahuna)
+    feeder_sql.insert(12,'Sub Total Petta',pltd_petta)
+    feeder_sql.insert(16,'Sub Total Tamako',pltd_tamako)
+    feeder_sql.insert(20,'Sub Total Lesabe',pltd_lesabe)
+    feeder_sql.insert(21,'Total',total)
+
+    
+
     context={
         'title':'Data Feeder | RedPanda',
+        'rows':list(feeder_sql.values.tolist()),
         }
     return render(request, 'pages/feeder/data.html', context)
