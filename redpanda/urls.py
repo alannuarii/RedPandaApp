@@ -10,5 +10,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('feeder/forecast', views.forecast_feeder, name='forecast_feeder'),
     path('feeder/data', views.data_feeder, name='data_feeder'),
+    path('pemeliharaan/rencana', views.rencana_har, name='rencana_har'),
     
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

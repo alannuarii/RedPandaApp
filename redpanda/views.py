@@ -1,8 +1,10 @@
+from unittest import result
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.conf import settings
+from redpanda.models import Unit, Mesin, Har
 import pandas as pd
 from sqlalchemy import create_engine
+from datetime import datetime, timedelta
 
 
 # Create Engine 
@@ -11,9 +13,10 @@ engine = create_engine('sqlite:///redpandadb.db')
 
 # HALAMAN HOME 
 def home(request):
-    # print(dir(request))
+
     context={
         'title':'Home | RedPAnda',
+        'active_home':'active'
         }
     return render(request, 'pages/home.html', context)
 
@@ -21,8 +24,36 @@ def home(request):
 # HALAMAN FORECAST FEEDER
 def forecast_feeder(request):
 
+    today = datetime.now()
+    day7 = today + timedelta(days=-7)
+    day14 = today + timedelta(days=-14)
+    day21 = today + timedelta(days=-21)
+    day28 = today + timedelta(days=-28)
+
+    data1 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day7.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
+    data2 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day14.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
+    data3 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day21.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
+    data4 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day28.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
+
+    list_data = [data1,data2,data3,data4]
+    data_concat = pd.concat(list_data,keys=range(len(list_data))).groupby(level=1)
+    forecast = data_concat.max()
+
+    total = forecast.iloc[0:24,1:16].sum(axis=1)
+    pltd_tahuna = forecast.iloc[0:24,1:7].sum(axis=1)
+    pltd_petta = forecast.iloc[0:24,7:11].sum(axis=1)
+    pltd_tamako = forecast.iloc[0:24,11:15].sum(axis=1)
+    pltd_lesabe  = forecast.iloc[0:24,15:19].sum(axis=1)
+    forecast.insert(7,'Sub Total Tahuna',pltd_tahuna)
+    forecast.insert(12,'Sub Total Petta',pltd_petta)
+    forecast.insert(16,'Sub Total Tamako',pltd_tamako)
+    forecast.insert(20,'Sub Total Lesabe',pltd_lesabe)
+    forecast.insert(21,'Total',total)
+
     context={
         'title':'Forecast Feeder | RedPanda',
+        'active_feeder':'active',
+        'rows':list(forecast.values.tolist()),
         }
     return render(request, 'pages/feeder/forecast.html', context)
 
@@ -55,6 +86,51 @@ def data_feeder(request):
 
     context={
         'title':'Data Feeder | RedPanda',
+        'active_feeder':'active',
         'rows':list(feeder_sql.values.tolist()),
         }
     return render(request, 'pages/feeder/data.html', context)
+
+
+# HALAMAN RENCANA PEMELIHARAAN
+def rencana_har(request):
+
+    mesins = Mesin.objects.all()
+    query = request.GET.get('tanggal')
+    
+    if query:
+        friday = datetime.strptime(query, '%Y-%m-%d')
+        delta = friday + timedelta(days=+6)
+        delta_friday = delta.date()
+
+        if request.method == 'POST':
+            try:
+                result = dict(request.POST.lists())
+                for i in range(len(mesins)):
+                    tanggal_jumat = result['tanggal_jumat'][0]
+                    jumat = result['jumat'][i]
+                    sabtu = result['sabtu'][i]
+                    minggu = result['minggu'][i]
+                    senin = result['senin'][i]
+                    selasa = result['selasa'][i]
+                    rabu = result['rabu'][i]
+                    kamis = result['kamis'][i]
+                    mesin_id = result['mesin_id'][i]
+                    har = Har(tanggal_jumat=tanggal_jumat, jumat=jumat, sabtu=sabtu, minggu=minggu, senin=senin, selasa=selasa, rabu=rabu, kamis=kamis, mesin_id_id=mesin_id)
+                    har.save()
+            except Exception as error:
+                print(error)
+
+    else:
+        friday = None
+        delta_friday = None
+
+
+    context={
+        'title':'Rencana Pemeliharaan | RedPanda',
+        'active_har':'active',
+        'mesins':mesins,
+        'friday':friday,
+        'delta_friday':delta_friday
+        }
+    return render(request, 'pages/pemeliharaan/rencana.html', context)

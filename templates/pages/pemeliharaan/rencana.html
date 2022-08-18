@@ -1,0 +1,189 @@
+{% extends 'layouts/base.html' %} {% block title %}
+<title>{{title}}</title>
+{% endblock title %} {% block content %}
+<div class="nav-scroller bg-body shadow-sm fixed-top">
+  <nav class="nav" aria-label="Secondary navigation">
+    {% if friday|date:'l' == 'Friday' %}
+    <div class="nav-link" data-bs-toggle="modal" data-bs-target="#modalInputHar"><i class="bi-plus"></i> Input</div>
+    {% else %}
+    <div class="nav-link" data-bs-toggle="modal" data-bs-target="#modalNotFriday"><i class="bi-plus"></i> Input</div>
+    {% endif %}
+    <div class="d-flex align-items-center ms-auto me-3">
+      <form action=""><input type="date" class="form-control" name="tanggal" onchange="this.form.submit()" /></form>
+    </div>
+  </nav>
+</div>
+<main class="container-fluid rencana-pemeliharaan">
+  <!-- Awal Modal Input  -->
+  <div class="modal fade" id="modalInputHar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white d-flex align-items-center">
+          {% comment %}
+          <h5 class="modal-title" id="exampleModalLabel">Input Rencana Pemeliharaan Tanggal <span>{{friday|date:'d-m-Y'}}</span> sampai <span>{{delta_friday|date:'d-m-Y'}}</span></h5>
+          {% endcomment %}
+          <h5 class="modal-title me-3" id="exampleModalLabel">Input Rencana Pemeliharaan Tanggal</h5>
+          <div class="input-group w-25">
+            <input type="text" class="form-control text-center" value="{{friday|date:'d-m-Y'}}" disabled />
+            <span class="input-group-text"><i class="bi-arrow-right"></i></span>
+            <input type="text" class="form-control text-center" value="{{delta_friday|date:'d-m-Y'}}" disabled />
+          </div>
+          <button type="button" class="btn-close text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="tanggal_jumat" value="{{request.GET.tanggal}}" />
+            <table class="table table-bordered text-center table-input">
+              <thead>
+                <tr>
+                  <th scope="col">Nama Unit</th>
+                  <th scope="col">Jumat</th>
+                  <th scope="col">Sabtu</th>
+                  <th scope="col">Minggu</th>
+                  <th scope="col">Senin</th>
+                  <th scope="col">Selasa</th>
+                  <th scope="col">Rabu</th>
+                  <th scope="col">Kamis</th>
+                </tr>
+              </thead>
+              {% for mesin in mesins %}
+              <tbody>
+                <tr>
+                  <td class="text-start">{{mesin.nama_unit_id}} Unit {{mesin.unit}} ({{mesin.nama_mesin}})</td>
+                  <input type="hidden" name="mesin_id" value="{{mesin.id}}" />
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="jumat">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="sabtu">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="minggu">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="senin">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="selasa">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="rabu">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="kamis">
+                      <option selected value="Standby">Standby</option>
+                      <option value="P1">P1</option>
+                      <option value="P2">P2</option>
+                      <option value="P3">P3</option>
+                      <option value="P4">P4</option>
+                      <option value="P5">P5</option>
+                      <option value="TO">TO</option>
+                      <option value="SO">SO</option>
+                      <option value="MO">MO</option>
+                      <option value="PdM">PdM</option>
+                      <option value="CM">CM</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+              {% endfor %}
+            </table>
+            <div class="text-center">
+              <input type="reset" class="btn btn-outline-secondary me-1" value="Reset" />
+              <input type="submit" class="btn btn-outline-primary" value="Submit" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Input  -->
+  <!-- Awal Modal Waring  -->
+  <div class="modal fade" id="modalNotFriday" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center position-relative">
+          <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+          <i class="bi-exclamation-triangle-fill text-warning"></i>
+          <h4>Pilih tanggal hari jumat untuk input</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Warning  -->
+</main>
+
+{% endblock content %}

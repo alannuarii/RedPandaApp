@@ -44,3 +44,32 @@ class Feeder(models.Model):
 
     def __str__(self):
         return '{}'.format(self.tanggal)
+
+
+# Model Pemeliharaan
+class Har(models.Model):
+    list_har = (
+        ('Standby', 'Standby'),
+        ('P1', 'P1'),
+        ('P2', 'P2'),
+        ('P3', 'P3'),
+        ('P4', 'P4'),
+        ('P5', 'P5'),
+        ('TO', 'TO'),
+        ('SO', 'SO'),
+        ('MO', 'MO'),
+        ('PdM', 'PdM'),
+        ('CM', 'CM'),
+    )
+    mesin_id = models.ForeignKey(Mesin, on_delete=models.CASCADE, verbose_name='Nama Mesin')
+    tanggal_jumat =  models.DateField('Tanggal Mulai')
+    jumat = models.CharField('Jumat', max_length=20, choices=list_har, default='Standby')
+    sabtu = models.CharField('Sabtu', max_length=20, choices=list_har, default='Standby')
+    minggu = models.CharField('Minggu', max_length=20, choices=list_har, default='Standby')
+    senin = models.CharField('Senin', max_length=20, choices=list_har, default='Standby')
+    selasa = models.CharField('Selasa', max_length=20, choices=list_har, default='Standby')
+    rabu = models.CharField('Rabu', max_length=20, choices=list_har, default='Standby')
+    kamis = models.CharField('Kamis', max_length=20, choices=list_har, default='Standby')
+    
+    def __str__(self):
+        return str(self.mesin_id)

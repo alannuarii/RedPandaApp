@@ -7,12 +7,6 @@ body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
 }
 
-/* ALL */
-tbody tr:hover {
-  background-color: #ee2110;
-  color: #fff;
-}
-
 /* PRELOADER */
 #preloader {
   position: fixed;
@@ -80,6 +74,13 @@ tbody tr:hover {
   font-family: "Cooper Black", sans-serif;
   -webkit-text-stroke: 0.3px #fff;
 }
+.navbar .navbar-nav .active {
+  border-bottom: #ee2110 solid 1px;
+  font-weight: 400;
+}
+.navbar .navbar-nav .nav-link:hover {
+  border-bottom: #ee2110 solid 1px;
+}
 .nav-scroller .nav {
   color: rgba(255, 255, 255, 0.75);
 }
@@ -101,7 +102,7 @@ tbody tr:hover {
   z-index: 1;
   height: 2.75rem;
   /* overflow-y: hidden; */
-  margin-top: 73px;
+  margin-top: 74px;
 }
 .nav-scroller .nav {
   display: flex;
@@ -120,13 +121,30 @@ tbody tr:hover {
 /* HOME */
 
 /* FEEDER */
-/* Data Feeder */
+.feeder .beban-feeder {
+  font-size: 12px;
+}
+.feeder tbody tr:hover {
+  background-color: var(--bs-gray-600);
+  color: #fff;
+}
+/* Data Feeder  */
 .data-feeder {
   padding-top: 130px;
-}
-.data-feeder {
   width: 100%;
 }
-.data-feeder .beban-feeder {
-  font-size: 12px;
+/* Forecast Feeder  */
+.forecast-feeder {
+  padding-top: 90px;
+  width: 100%;
+}
+
+/* PEMELIHARAAN */
+/* Rencana Pemeliharaan */
+.rencana-pemeliharaan {
+  padding-top: 130px;
+  width: 100%;
+}
+.rencana-pemeliharaan #modalNotFriday i {
+  font-size: 70px;
 }

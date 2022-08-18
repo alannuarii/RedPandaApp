@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from redpanda.models import Mesin, Unit, Feeder
+from redpanda.models import Mesin, Unit, Feeder, Har
 
 # Register your models here.
 class MesinAdmin(admin.ModelAdmin):
@@ -15,7 +15,12 @@ class FeederAdmin(admin.ModelAdmin):
     list_display = ('id','tanggal','jam','kota','tona','kolongan','lesabe','tamako','mainlinepetta','pettakota','mainlinetahuna','kendahe','bowongkulu','kotatamako','lapango','tahuna','salurang','pintareng','tahunaincome')
 
 
+class HarAdmin(admin.ModelAdmin):
+    list_display = ('mesin_id','tanggal_jumat','jumat','sabtu','minggu','senin', 'selasa','rabu','kamis')
+
+
 admin.site.register(Mesin, MesinAdmin)
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Feeder, FeederAdmin)
+admin.site.register(Har, HarAdmin)
 

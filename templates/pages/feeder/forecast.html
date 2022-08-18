@@ -1,9 +1,56 @@
 {% extends 'layouts/base.html' %} {% block title %}
 <title>{{title}}</title>
 {% endblock title %} {% block content %}
-<main class="container-fluid home">
-  <div class="row">
-    <div class="col"><h1>TES</h1></div>
+<main class="container-fluid forecast-feeder">
+  <div class="row feeder">
+    <div class="col-12">
+      <table class="table table-bordered text-center beban-feeder">
+        <thead>
+          <tr>
+            <th scope="col" colspan="22">Data Beban Feeder Tanggal 27 Juni 2022</th>
+          </tr>
+          <tr>
+            <th scope="col" rowspan="2" class="align-middle">Jam</th>
+            <th scope="col" colspan="7">PLTD Tahuna</th>
+            <th scope="col" colspan="5">PLTD Petta</th>
+            <th scope="col" colspan="4">PLTD Tamako</th>
+            <th scope="col" colspan="4">PLTD Lesabe</th>
+            <th scope="col" rowspan="2" class="bg-dark text-light align-middle">Total</th>
+          </tr>
+          <tr>
+            <th scope="col" class="align-middle">Kota</th>
+            <th scope="col" class="align-middle">Tona</th>
+            <th scope="col" class="align-middle">Kolongan</th>
+            <th scope="col" class="align-middle">Lesabe</th>
+            <th scope="col" class="align-middle">Tamako</th>
+            <th scope="col">Mineline Petta</th>
+            <th scope="col">Sub Total</th>
+            <th scope="col">Petta Kota</th>
+            <th scope="col">Mineline Tahuna</th>
+            <th scope="col" class="align-middle">Kendahe</th>
+            <th scope="col" class="align-middle">Bowongkulu</th>
+            <th scope="col">Sub Total</th>
+            <th scope="col">Kota Tamako</th>
+            <th scope="col" class="align-middle">Lapango</th>
+            <th scope="col" class="align-middle">Tahuna</th>
+            <th scope="col">Sub Total</th>
+            <th scope="col" class="align-middle">Salurang</th>
+            <th scope="col" class="align-middle">Pintareng</th>
+            <th scope="col">Tahuna (Income)</th>
+            <th scope="col">Sub Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            {% for row_ in row %}
+            <td>{{row_}}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>
 {% endblock content %}
