@@ -71,23 +71,33 @@ def data_feeder(request):
             data_excel.to_sql(name='redpanda_feeder', con=engine, if_exists='append', index=False)
         except Exception as error:
             print(error)
+
+    if 'tanggal' in request.GET:
+        query = request.GET.get('tanggal')
+        tanggal = datetime.strptime(query, '%Y-%m-%d')
     
-    feeder_sql = pd.read_sql('redpanda_feeder', con=engine).iloc[0:24,2:]
-    total = feeder_sql.iloc[0:24,1:16].sum(axis=1)
-    pltd_tahuna = feeder_sql.iloc[0:24,1:7].sum(axis=1)
-    pltd_petta = feeder_sql.iloc[0:24,7:11].sum(axis=1)
-    pltd_tamako = feeder_sql.iloc[0:24,11:15].sum(axis=1)
-    pltd_lesabe  = feeder_sql.iloc[0:24,15:19].sum(axis=1)
-    feeder_sql.insert(7,'Sub Total Tahuna',pltd_tahuna)
-    feeder_sql.insert(12,'Sub Total Petta',pltd_petta)
-    feeder_sql.insert(16,'Sub Total Tamako',pltd_tamako)
-    feeder_sql.insert(20,'Sub Total Lesabe',pltd_lesabe)
-    feeder_sql.insert(21,'Total',total)
+        feeder_sql = pd.read_sql("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(query), con=engine).iloc[0:24,2:]
+        total = feeder_sql.iloc[0:24,1:16].sum(axis=1)
+        pltd_tahuna = feeder_sql.iloc[0:24,1:7].sum(axis=1)
+        pltd_petta = feeder_sql.iloc[0:24,7:11].sum(axis=1)
+        pltd_tamako = feeder_sql.iloc[0:24,11:15].sum(axis=1)
+        pltd_lesabe  = feeder_sql.iloc[0:24,15:19].sum(axis=1)
+        feeder_sql.insert(7,'Sub Total Tahuna',pltd_tahuna)
+        feeder_sql.insert(12,'Sub Total Petta',pltd_petta)
+        feeder_sql.insert(16,'Sub Total Tamako',pltd_tamako)
+        feeder_sql.insert(20,'Sub Total Lesabe',pltd_lesabe)
+        feeder_sql.insert(21,'Total',total)
+        rows = list(feeder_sql.values.tolist())
+
+    else:
+        rows = None
+        tanggal = None
 
     context={
         'title':'Data Feeder | RedPanda',
         'active_feeder':'active',
-        'rows':list(feeder_sql.values.tolist()),
+        'rows':rows,
+        'tanggal':tanggal,
         }
     return render(request, 'pages/feeder/data.html', context)
 

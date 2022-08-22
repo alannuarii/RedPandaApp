@@ -4,7 +4,7 @@
 <div class="nav-scroller bg-body shadow-sm fixed-top">
   <nav class="nav" aria-label="Secondary navigation">
     <div class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUploadDataFeeder"><i class="bi-upload"></i> Upload</div>
-    <a class="nav-link" href="#">
+    <!-- <a class="nav-link" href="#">
       Friends
       <span class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
     </a>
@@ -14,16 +14,20 @@
     <a class="nav-link" href="#">Link</a>
     <a class="nav-link" href="#">Link</a>
     <a class="nav-link" href="#">Link</a>
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="#">Link</a> -->
+    <div class="d-flex align-items-center ms-auto me-3">
+      <form action=""><input type="date" class="form-control" name="tanggal" onchange="this.form.submit()" /></form>
+    </div>
   </nav>
 </div>
 <main class="container-fluid data-feeder">
   <div class="row feeder">
     <div class="col-12">
+      {% if request.GET %}
       <table class="table table-bordered text-center beban-feeder">
         <thead>
           <tr>
-            <th scope="col" colspan="22">Data Beban Feeder Tanggal 27 Juni 2022</th>
+            <th scope="col" colspan="22">Data Beban Feeder Tanggal<span class="text-bg-secondary p-1 rounded-2 ms-2">{{tanggal|date:'d-m-Y'}}</span></th>
           </tr>
           <tr>
             <th scope="col" rowspan="2" class="align-middle">Jam</th>
@@ -56,6 +60,7 @@
             <th scope="col">Sub Total</th>
           </tr>
         </thead>
+        {% if rows %}
         <tbody>
           {% for row in rows %}
           <tr>
@@ -65,7 +70,15 @@
           </tr>
           {% endfor %}
         </tbody>
+        {% else %}
+        <tbody>
+          <tr>
+            <td colspan="22" class="align-middle">Tidak ada data</td>
+          </tr>
+        </tbody>
+        {% endif %}
       </table>
+      {% else %} {% endif %}
     </div>
   </div>
 </main>
