@@ -14,6 +14,38 @@
   </nav>
 </div>
 <main class="container-fluid rencana-pemeliharaan">
+  <div class="row">
+    <div class="col">
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th scope="col" class="align-middle">Nama Unit</th>
+            <th scope="col">Jumat<br /><span class="fw-normal">26-08-2022</span></th>
+            <th scope="col">Sabtu<br /><span class="fw-normal">27-08-2022</span></th>
+            <th scope="col">Minggu<br /><span class="fw-normal">28-08-2022</span></th>
+            <th scope="col">Senin<br /><span class="fw-normal">29-08-2022</span></th>
+            <th scope="col">Selasa<br /><span class="fw-normal">30-08-2022</span></th>
+            <th scope="col">Rabu<br /><span class="fw-normal">31-08-2022</span></th>
+            <th scope="col">Kamis<br /><span class="fw-normal">01-09-2022</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for har in hars %}
+          <tr>
+            <td class="text-start">{{har.mesin_id}}</td>
+            <td>{{har.jumat}}</td>
+            <td>{{har.sabtu}}</td>
+            <td>{{har.minggu}}</td>
+            <td>{{har.senin}}</td>
+            <td>{{har.selasa}}</td>
+            <td>{{har.rabu}}</td>
+            <td>{{har.kamis}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
   <!-- Awal Modal Input  -->
   <div class="modal fade" id="modalInputHar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">

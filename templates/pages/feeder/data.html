@@ -1,4 +1,4 @@
-{% extends 'layouts/base.html' %} {% block title %}
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}
 <title>{{title}}</title>
 {% endblock title %} {% block content %}
 <div class="nav-scroller bg-body shadow-sm fixed-top">
@@ -78,7 +78,11 @@
         </tbody>
         {% endif %}
       </table>
-      {% else %} {% endif %}
+      {% else %}
+      <div class="d-flex justify-content-center">
+        <img src="{% static 'img/date.png' %}" class="img-fluid w-50" alt="" />
+      </div>
+      {% endif %}
     </div>
   </div>
 </main>

@@ -5,6 +5,7 @@ from redpanda.models import Unit, Mesin, Har
 import pandas as pd
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta
+from redpanda.utils import getfriday
 
 
 # Create Engine 
@@ -106,12 +107,19 @@ def data_feeder(request):
 def rencana_har(request):
 
     mesins = Mesin.objects.all()
+    today = datetime.now().date()
     query = request.GET.get('tanggal')
+
+    # Query Rencana Pemeliharaan Hari Ini 
+    hars = Har.objects.filter(tanggal_jumat=getfriday(str(today)))
     
     if query:
         friday = datetime.strptime(query, '%Y-%m-%d')
         delta = friday + timedelta(days=+6)
         delta_friday = delta.date()
+
+        # Query Rencana Pemeliharaan Tanggal Pilihan
+        hars = Har.objects.filter(tanggal_jumat=getfriday(query))
 
         if request.method == 'POST':
             try:
@@ -141,6 +149,7 @@ def rencana_har(request):
         'active_har':'active',
         'mesins':mesins,
         'friday':friday,
-        'delta_friday':delta_friday
+        'delta_friday':delta_friday,
+        'hars':hars,
         }
     return render(request, 'pages/pemeliharaan/rencana.html', context)
