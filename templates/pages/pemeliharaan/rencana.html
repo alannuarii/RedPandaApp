@@ -1,4 +1,4 @@
-{% extends 'layouts/base.html' %} {% block title %}
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}
 <title>{{title}}</title>
 {% endblock title %} {% block content %}
 <div class="nav-scroller bg-body shadow-sm fixed-top">
@@ -16,17 +16,18 @@
 <main class="container-fluid rencana-pemeliharaan">
   <div class="row">
     <div class="col">
+      {% if hars %}
       <table class="table table-bordered text-center">
         <thead>
           <tr>
             <th scope="col" class="align-middle">Nama Unit</th>
-            <th scope="col">Jumat<br /><span class="fw-normal">26-08-2022</span></th>
-            <th scope="col">Sabtu<br /><span class="fw-normal">27-08-2022</span></th>
-            <th scope="col">Minggu<br /><span class="fw-normal">28-08-2022</span></th>
-            <th scope="col">Senin<br /><span class="fw-normal">29-08-2022</span></th>
-            <th scope="col">Selasa<br /><span class="fw-normal">30-08-2022</span></th>
-            <th scope="col">Rabu<br /><span class="fw-normal">31-08-2022</span></th>
-            <th scope="col">Kamis<br /><span class="fw-normal">01-09-2022</span></th>
+            <th scope="col">Jumat<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tanggal_jumat|date:'d-m-Y'}}</span></th>
+            <th scope="col">Sabtu<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tglsabtu|date:'d-m-Y'}}</span></th>
+            <th scope="col">Minggu<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tglminggu|date:'d-m-Y'}}</span></th>
+            <th scope="col">Senin<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tglsenin|date:'d-m-Y'}}</span></th>
+            <th scope="col">Selasa<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tglselasa|date:'d-m-Y'}}</span></th>
+            <th scope="col">Rabu<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tglrabu|date:'d-m-Y'}}</span></th>
+            <th scope="col">Kamis<br /><span class="bg-secondary text-white fw-bold p-1 rounded-2">{{hars.0.tglkamis|date:'d-m-Y'}}</span></th>
           </tr>
         </thead>
         <tbody>
@@ -44,6 +45,11 @@
           {% endfor %}
         </tbody>
       </table>
+      {% else %}
+      <div class="d-flex justify-content-center">
+        <img src="{% static 'img/date.png' %}" class="img-fluid w-50" alt="" />
+      </div>
+      {% endif %}
     </div>
   </div>
   <!-- Awal Modal Input  -->

@@ -1,4 +1,3 @@
-from unittest import result
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from redpanda.models import Unit, Mesin, Har

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, timedelta
 
 
 # Model Unit
@@ -73,3 +74,21 @@ class Har(models.Model):
     
     def __str__(self):
         return str(self.mesin_id)
+
+    def tglsabtu(self):
+        return self.tanggal_jumat + timedelta(days=1)
+
+    def tglminggu(self):
+        return self.tanggal_jumat + timedelta(days=2)
+
+    def tglsenin(self):
+        return self.tanggal_jumat + timedelta(days=3)
+    
+    def tglselasa(self):
+        return self.tanggal_jumat + timedelta(days=4)
+
+    def tglrabu(self):
+        return self.tanggal_jumat + timedelta(days=5)
+
+    def tglkamis(self):
+        return self.tanggal_jumat + timedelta(days=6)
