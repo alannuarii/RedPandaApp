@@ -67,6 +67,29 @@ body {
 }
 
 /* SIGN IN  */
+#login {
+  width: 100%;
+  height: 100vh;
+}
+#login .container {
+  padding-top: 10px;
+  position: relative;
+}
+.login .card {
+  padding: 20px 50px 50px 50px;
+  border-radius: 50px;
+}
+.login img {
+  width: 65%;
+  top: -40px;
+}
+.login h1 {
+  font-family: "Cooper Black", sans-serif;
+}
+.login p {
+  font-size: 12px;
+  margin-top: 30px;
+}
 
 /* NAVBAR  */
 .navbar .navbar-brand span {
@@ -116,6 +139,9 @@ body {
 }
 .nav-scroller .nav-link {
   cursor: pointer;
+}
+#modalSignOut i {
+  font-size: 70px;
 }
 
 /* HOME */

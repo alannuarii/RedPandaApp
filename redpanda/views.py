@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from redpanda.models import Unit, Mesin, Har
 import pandas as pd
@@ -11,7 +13,40 @@ from redpanda.utils import getfriday
 engine = create_engine('sqlite:///redpandadb.db')
 
 
+# HALAMAN SIGN-IN 
+def sign_in(request):
+    
+    context={
+        'title':'Sign In | RedPanda',
+        }
+    
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('/')
+        else:
+            return render(request, 'pages/auth/sign-in.html', context)
+    
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.error(request, 'Username atau password Anda salah')
+            return redirect('/auth/sign-in')
+    
+
+# Fungsi Sign Out 
+def sign_out(request):
+    logout(request)
+    return redirect('/auth/sign-in')
+
+
 # HALAMAN HOME 
+@login_required(login_url='sign_in')
 def home(request):
 
     context={
@@ -22,6 +57,7 @@ def home(request):
 
 
 # HALAMAN FORECAST FEEDER
+@login_required(login_url='sign_in')
 def forecast_feeder(request):
 
     today = datetime.now()
@@ -59,6 +95,7 @@ def forecast_feeder(request):
 
 
 # HALAMAN DATA FEEDER
+@login_required(login_url='sign_in')
 def data_feeder(request):
     
     if request.method == 'POST':
@@ -103,6 +140,7 @@ def data_feeder(request):
 
 
 # HALAMAN RENCANA PEMELIHARAAN
+@login_required(login_url='sign_in')
 def rencana_har(request):
 
     mesins = Mesin.objects.all()
@@ -141,7 +179,6 @@ def rencana_har(request):
     else:
         friday = None
         delta_friday = None
-
 
     context={
         'title':'Rencana Pemeliharaan | RedPanda',

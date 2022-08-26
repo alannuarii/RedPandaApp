@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'includes/styles.html' %}
+    <title>{{title}}</title>
+    <!-- Favicons -->
+    <link href="{% static 'img/logo3.png' %}" rel="icon" />
+  </head>
+  <body>
+    {% block content %}
+    <main id="login" class="login d-flex align-items-center">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-4 offset-8 position-relative">
+            <img src="{% static '/img/logo3.png' %}" class="img-fluid position-absolute start-50 translate-middle" alt="" />
+            <div class="card shadow-lg text-center">
+              <h1 class="mb-3"><span style="color: #4a0e03">Red</span><span style="color: #ee2110">Panda</span></h1>
+              <h5 class="mb-4">Enter your username & password</h5>
+              <form method="post" action="">
+                {% csrf_token %}
+                <div class="input-group input-group-lg mb-1">
+                  <span class="input-group-text" id="basic-addon1"><i class="bi-person-circle"></i></span>
+                  <input type="text" class="form-control" placeholder="Username" name="username" />
+                </div>
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text" id="basic-addon1"><i class="bi-key-fill"></i></span>
+                  <input type="password" class="form-control" placeholder="Password" name="password" />
+                </div>
+                <div class="btn-group btn-group-lg w-100" role="group">
+                  <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                  <button type="submit" class="btn btn-outline-primary">Sign In</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    {% endblock content %}{% include 'includes/preloader.html' %}{% include 'includes/scripts.html' %}
+  </body>
+</html>
