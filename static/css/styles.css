@@ -145,6 +145,10 @@ body {
 }
 
 /* HOME */
+.home {
+  padding-top: 90px;
+  width: 100%;
+}
 
 /* FEEDER */
 .feeder .beban-feeder {
