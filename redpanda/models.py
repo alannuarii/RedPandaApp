@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from datetime import datetime, timedelta
 
@@ -20,6 +21,18 @@ class Mesin(models.Model):
 
     def __str__(self):
         return '{} Unit {} ({})'.format(self.nama_unit_id, self.unit, self.nama_mesin)
+
+    def air(self):
+        if 'PLTM' in str(self.nama_unit_id):
+            return 'True'
+        else:
+            return 'False'
+
+    def surya(self):
+        if 'PLTS' in str(self.nama_unit_id):
+            return 'True'
+        else:
+            return 'False'
 
 
 # Model Feeder 
@@ -92,3 +105,21 @@ class Har(models.Model):
 
     def tglkamis(self):
         return self.tanggal_jumat + timedelta(days=6)
+
+
+#Model Cost
+class Cost(models.Model):
+    mesin_id = models.ForeignKey(Mesin, on_delete=models.CASCADE, verbose_name='Nama Mesin')
+    tanggal = models.DateField('Tanggal Input', auto_now=True)
+    fix_cost = models.IntegerField('Total Fix Cost', blank=True, null=True)
+    time_base_vcost = models.IntegerField('Total Time Base V-Cost', blank=True, null=True)
+    sfc_50 = models.DecimalField('SFC 50% DMN', blank=True, null=True, decimal_places=3, max_digits=5)
+    sfc_75 = models.DecimalField('SFC 75% DMN', blank=True, null=True, decimal_places=3, max_digits=5)
+    sfc_100 = models.DecimalField('SFC 100% DMN', blank=True, null=True, decimal_places=3, max_digits=5)
+    harga_sewa = models.IntegerField('Harga Sewa per kWh', blank=True, null=True)
+    pajak_air = models.IntegerField('Pajak Air Permukaan', blank=True, null=True)
+    susut_trafo = models.DecimalField('Susut Trafo', blank=True, null=True, decimal_places=0, max_digits=10)
+    susut_jaringan = models.DecimalField('Susut Jaringan (%)', blank=True, null=True, decimal_places=0, max_digits=10)
+
+    def __str__(self):
+        return str(self.mesin_id)

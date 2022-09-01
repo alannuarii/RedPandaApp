@@ -149,6 +149,26 @@ body {
   padding-top: 90px;
   width: 100%;
 }
+.home .card-grid {
+  height: 740px;
+  margin-bottom: 50px;
+}
+.home .chart {
+  height: 400px;
+}
+.home button[type="submit"] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+.home .btn-nav {
+  cursor: pointer;
+  font-size: 20px;
+}
 
 /* FEEDER */
 .feeder .beban-feeder {

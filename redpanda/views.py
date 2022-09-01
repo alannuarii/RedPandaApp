@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from redpanda.models import Unit, Mesin, Har
+from redpanda.models import Cost, Unit, Mesin, Har
 import pandas as pd
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta
@@ -49,9 +49,111 @@ def sign_out(request):
 @login_required(login_url='sign_in')
 def home(request):
 
+    units = Unit.objects.all()
+
+    query_unit = request.GET.get('unit')
+    query_mesin = request.GET.get('mesin')
+    if 'unit' and 'mesin' in request.GET:
+        mesins = Mesin.objects.filter(nama_unit_id=query_unit)
+        mesin = Mesin.objects.filter(id= query_mesin)
+        costs = Cost.objects.filter(mesin_id = query_mesin).last()
+        print(costs)
+    elif 'unit' in request.GET:
+        mesins = Mesin.objects.filter(nama_unit_id=query_unit)
+        mesin = Mesin.objects.filter(id = query_mesin)
+        costs = None
+    else:
+        mesins = None
+        mesin = None
+        costs = None
+
+    if 'first_input' in request.POST:
+        if 'fix_cost' and 'sfc_100' in request.POST:
+            fix_cost = request.POST['fix_cost']
+            time_base_vcost = request.POST['time_base_vcost']
+            sfc_50 = request.POST['sfc_50']
+            sfc_75 = request.POST['sfc_75']
+            sfc_100 = request.POST['sfc_100']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, sfc_50=sfc_50, sfc_75=sfc_75, sfc_100=sfc_100, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+        elif 'harga_sewa' in request.POST:
+            harga_sewa = request.POST['harga_sewa']
+            sfc_50 = request.POST['sfc_50']
+            sfc_75 = request.POST['sfc_75']
+            sfc_100 = request.POST['sfc_100']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(harga_sewa=harga_sewa, sfc_50=sfc_50, sfc_75=sfc_75, sfc_100=sfc_100, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+        elif 'pajak_air' in request.POST:
+            fix_cost = request.POST['fix_cost']
+            time_base_vcost = request.POST['time_base_vcost']
+            pajak_air = request.POST['pajak_air']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, pajak_air=pajak_air, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+        else:
+            fix_cost = request.POST['fix_cost']
+            time_base_vcost = request.POST['time_base_vcost']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+
+    elif 'input_cost' in request.POST:
+        if 'fix_cost' and 'sfc_100' in request.POST:
+            fix_cost = request.POST['fix_cost']
+            time_base_vcost = request.POST['time_base_vcost']
+            sfc_50 = request.POST['sfc_50']
+            sfc_75 = request.POST['sfc_75']
+            sfc_100 = request.POST['sfc_100']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, sfc_50=sfc_50, sfc_75=sfc_75, sfc_100=sfc_100, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+        elif 'harga_sewa' in request.POST:
+            harga_sewa = request.POST['harga_sewa']
+            sfc_50 = request.POST['sfc_50']
+            sfc_75 = request.POST['sfc_75']
+            sfc_100 = request.POST['sfc_100']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(harga_sewa=harga_sewa, sfc_50=sfc_50, sfc_75=sfc_75, sfc_100=sfc_100, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+        elif 'pajak_air' in request.POST:
+            fix_cost = request.POST['fix_cost']
+            time_base_vcost = request.POST['time_base_vcost']
+            pajak_air = request.POST['pajak_air']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, pajak_air=pajak_air, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+        else:
+            fix_cost = request.POST['fix_cost']
+            time_base_vcost = request.POST['time_base_vcost']
+            susut_trafo = request.POST['susut_trafo']
+            susut_jaringan = request.POST['susut_jaringan']
+            mesin_id = request.POST['mesin_id']
+            cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
+            cost.save()
+
     context={
         'title':'Home | RedPAnda',
-        'active_home':'active'
+        'active_home':'active',
+        'units':units,
+        'mesins':mesins,
+        'mesin':mesin,
+        'costs':costs,
         }
     return render(request, 'pages/home.html', context)
 

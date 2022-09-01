@@ -1,9 +1,291 @@
-{% extends 'layouts/base.html' %} {% block title %}
+{% extends 'layouts/base.html' %} {% load humanize %} {% block title %}
 <title>{{title}}</title>
 {% endblock title %} {% block content %}
 <main class="container-fluid home">
   <div class="row">
-    <div class="col"><h1>TES</h1></div>
+    <div class="col-12">
+      <div class="card d-flex justify-content-center align-items-center card-grid shadow-lg position-relative">
+        <h1>GAMBAR</h1>
+        <div class="border rounded-4 p-4 w-75 bg-white shadow d-flex justify-content-center align-content-center position-absolute top-100 start-50 translate-middle">
+          <div class="d-flex">
+            {% for unit in units %}
+            <form action="" class="me-2">
+              <input type="submit" class="btn btn-secondary" value="{{unit}}" />
+              <input type="hidden" name="unit" value="{{unit.id}}" />
+            </form>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="row mt-3 mb-3" id="cost">
+    <div class="col-6">
+      {% if request.GET.unit %}
+      <div class="card shadow-lg p-4 position-relative">
+        <table class="table">
+          <thead>
+            <tr class="text-center">
+              <th scope="col">Nama Unit</th>
+              <th scope="col">Status</th>
+              <th scope="col">Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for mesin in mesins %}
+            <tr>
+              <td>{{mesin}}</td>
+              {% if mesin.is_sewa == False %}
+              <td class="text-center">PLN</td>
+              {% else %}
+              <td class="text-center">Sewa</td>
+              {% endif %}
+              <td class="text-center">
+                <form action="">
+                  <input type="hidden" name="unit" value="{{mesin.nama_unit_id_id}}" />
+                  <input type="hidden" name="mesin" value="{{mesin.id}}" />
+                  <button type="submit" class="btn"><i class="bi-arrow-right-circle-fill btn-cost text-secondary"></i></button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %} {% if request.GET.mesin %} {% if costs %}
+      <div class="card shadow-lg mt-3 p-4 position-relative">
+        <h5 class="mb-3">{{mesin.0}}</h5>
+        {% if mesin.0.is_sewa == False %}
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Total Fix Cost</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" value="Rp {{costs.fix_cost|intcomma}}" disabled />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Total Time Based V-Cost</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="time_base_vcost" value="Rp {{costs.time_base_vcost|intcomma}}" disabled />
+          </div>
+        </div>
+        {% endif %} {% if mesin.0.is_sewa == True %}
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Harga Sewa per kWh</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="harga_sewa" value="Rp {{costs.harga_sewa|intcomma}}" disabled />
+          </div>
+        </div>
+        {% endif %} {% if mesin.0.air == 'True' %}
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Pajak Air Permukaan</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="pajak_air" value="Rp {{costs.pajak_air|intcomma}}" disabled />
+          </div>
+        </div>
+        {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">SFC 50% DMN</label>
+          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_50" value="{{costs.sfc_50|floatformat:"-3" }} Liter/kWh" disabled /></div>
+        </div>
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">SFC 75% DMN</label>
+          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_75" value="{{costs.sfc_75|floatformat:"-3" }} Liter/kWh" disabled /></div>
+        </div>
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">SFC 100% DMN</label>
+          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_100" value="{{costs.sfc_100|floatformat:"-3" }} Liter/kWh" disabled /></div>
+        </div>
+        {% endif %}
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Susut Trafo</label>
+          <div class="col-sm-6"><input type="text" class="form-control" name="susut_trafo" value="{{costs.susut_trafo|floatformat:"0" }} kWh" disabled /></div>
+        </div>
+        <div class="mb-3 row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Susut Jaringan</label>
+          <div class="col-sm-6"><input type="text" class="form-control" name="susut_jaringan" value="{{costs.susut_jaringan|floatformat:"0" }} kWh" disabled /></div>
+        </div>
+        <div class="position-absolute top-50 end-0 translate-middle-y border p-4 rounded-4 me-3">
+          <div data-bs-toggle="modal" data-bs-target="#modalInputCost">
+            <i class="bi-plus-circle text-secondary btn-nav"></i>
+          </div>
+          <div class="my-3">
+            <i class="bi-input-cursor text-secondary btn-nav"></i>
+          </div>
+          <div>
+            <i class="bi-trash3 text-secondary btn-nav"></i>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="card shadow-lg mt-3 p-4 position-relative">
+          <h5 class="mb-3">{{mesin.0}}</h5>
+          {% if mesin.0.is_sewa == False %}
+          <input type="hidden" name="mesin_id" value="{{mesin.0.id}}" />
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Total Fix Cost</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" id="inputPassword" name="fix_cost" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Total Time Based V-Cost</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="time_base_vcost" id="inputPassword" />
+            </div>
+          </div>
+          {% endif %} {% if mesin.0.is_sewa == True %}
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Harga Sewa per kWh</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="harga_sewa" id="inputPassword" />
+            </div>
+          </div>
+          {% endif %} {% if mesin.0.air == 'True' %}
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Pajak Air Permukaan</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="pajak_air" id="inputPassword" />
+            </div>
+          </div>
+          {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">SFC 50% DMN</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="sfc_50" id="inputPassword" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">SFC 75% DMN</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="sfc_75" id="inputPassword" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">SFC 100% DMN</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="sfc_100" id="inputPassword" />
+            </div>
+          </div>
+          {% endif %}
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Susut Trafo</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="susut_trafo" id="inputPassword" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Susut Jaringan</label>
+            <div class="col-sm-6">
+              <input type="number" step="any" class="form-control" name="susut_jaringan" id="inputPassword" />
+            </div>
+          </div>
+          <div class="text-center">
+            <input type="reset" class="btn btn-outline-secondary me-1" value="Reset" />
+            <input type="submit" class="btn btn-outline-primary" name="first_input" value="Submit" />
+          </div>
+          <div class="position-absolute top-50 end-0 translate-middle-y border p-4 rounded-4 me-3">
+            <div class="mb-3">
+              <i class="bi-input-cursor text-secondary btn-nav"></i>
+            </div>
+            <div>
+              <i class="bi-trash3 text-secondary btn-nav"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+      {% endif %} {% endif %}
+    </div>
+    {% if request.GET.mesin %}
+    <div class="col-6">
+      <div class="card d-flex justify-content-center align-items-center shadow-lg chart"><h1>Chart</h1></div>
+      <div class="card d-flex justify-content-center align-items-center shadow-lg chart mt-3"><h1>Chart</h1></div>
+    </div>
+    {% endif %}
+  </div>
+  <!-- Awal Modal Input  -->
+  <div class="modal fade" id="modalInputCost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white d-flex align-items-center">
+          <h5 class="modal-title me-3" id="exampleModalLabel">Input Data Cost {{mesin.0}}</h5>
+          <button type="button" class="btn-close text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="mesin_id" value="{{mesin.0.id}}" />
+            <div class="card shadow-lg p-4 position-relative">
+              {% if mesin.0.is_sewa == False %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">Total Fix Cost</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" id="inputPassword" name="fix_cost" />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">Total Time Based V-Cost</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="time_base_vcost" id="inputPassword" />
+                </div>
+              </div>
+              {% endif %} {% if mesin.0.is_sewa == True %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">Harga Sewa per kWh</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="harga_sewa" id="inputPassword" />
+                </div>
+              </div>
+              {% endif %} {% if mesin.0.air == 'True' %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">Pajak Air Permukaan</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="pajak_air" id="inputPassword" />
+                </div>
+              </div>
+              {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 50% DMN</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="sfc_50" id="inputPassword" />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 75% DMN</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="sfc_75" id="inputPassword" />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 100% DMN</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="sfc_100" id="inputPassword" />
+                </div>
+              </div>
+              {% endif %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">Susut Trafo</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="susut_trafo" id="inputPassword" />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-5 col-form-label">Susut Jaringan</label>
+                <div class="col-sm-7">
+                  <input type="number" step="any" class="form-control" name="susut_jaringan" id="inputPassword" />
+                </div>
+              </div>
+              <div class="text-center">
+                <input type="reset" class="btn btn-outline-secondary me-1" value="Reset" />
+                <input type="submit" class="btn btn-outline-primary" name="input_cost" value="Submit" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Input  -->
 </main>
 {% endblock content %}
