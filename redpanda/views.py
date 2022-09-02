@@ -57,7 +57,6 @@ def home(request):
         mesins = Mesin.objects.filter(nama_unit_id=query_unit)
         mesin = Mesin.objects.filter(id= query_mesin)
         costs = Cost.objects.filter(mesin_id = query_mesin).last()
-        print(costs)
     elif 'unit' in request.GET:
         mesins = Mesin.objects.filter(nama_unit_id=query_unit)
         mesin = Mesin.objects.filter(id = query_mesin)
@@ -147,6 +146,39 @@ def home(request):
             cost = Cost(fix_cost=fix_cost, time_base_vcost=time_base_vcost, susut_trafo=susut_trafo, susut_jaringan=susut_jaringan, mesin_id_id=mesin_id)
             cost.save()
 
+    elif 'update_cost' in request.POST:
+        update = Cost.objects.filter(mesin_id=request.POST['mesin_id']).last()
+        if 'fix_cost' and 'sfc_100' in request.POST:
+            update.fix_cost = int(request.POST['fix_cost'])
+            update.time_base_vcost = int(request.POST['time_base_vcost'])
+            update.sfc_50 = float(request.POST['sfc_50'])
+            update.sfc_75 = float(request.POST['sfc_75'])
+            update.sfc_100 = float(request.POST['sfc_100'])
+            update.susut_trafo = float(request.POST['susut_trafo'])
+            update.susut_jaringan = float(request.POST['susut_jaringan'])
+            update.save()
+        elif 'harga_sewa' in request.POST:
+            update.harga_sewa = int(request.POST['harga_sewa'])
+            update.sfc_50 = float(request.POST['sfc_50'])
+            update.sfc_75 = float(request.POST['sfc_75'])
+            update.sfc_100 = float(request.POST['sfc_100'])
+            update.susut_trafo = float(request.POST['susut_trafo'])
+            update.susut_jaringan = float(request.POST['susut_jaringan'])
+            update.save()
+        elif 'pajak_air' in request.POST:
+            update.fix_cost = int(request.POST['fix_cost'])
+            update.time_base_vcost = int(request.POST['time_base_vcost'])
+            update.pajak_air = int(request.POST['pajak_air'])
+            update.susut_trafo = float(request.POST['susut_trafo'])
+            update.susut_jaringan = float(request.POST['susut_jaringan'])
+            update.save()
+        else:
+            update.fix_cost = int(request.POST['fix_cost'])
+            update.time_base_vcost = int(request.POST['time_base_vcost'])
+            update.susut_trafo = float(request.POST['susut_trafo'])
+            update.susut_jaringan = float(request.POST['susut_jaringan'])
+            update.save()
+
     context={
         'title':'Home | RedPAnda',
         'active_home':'active',
@@ -156,6 +188,12 @@ def home(request):
         'costs':costs,
         }
     return render(request, 'pages/home.html', context)
+
+# Delete Cost 
+def delete_cost(request, id):
+    hapus = Cost.objects.get(id = id)
+    hapus.delete()
+    return redirect('/')
 
 
 # HALAMAN FORECAST FEEDER

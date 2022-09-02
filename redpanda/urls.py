@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
     path('', views.home, name='home'),
+    path('delete/<int:id>', views.delete_cost, name='delete_cost'),
     path('auth/sign-in', views.sign_in, name='sign_in'),
     path('sign-out', views.sign_out, name='sign_out'),
     path('feeder/forecast', views.forecast_feeder, name='forecast_feeder'),

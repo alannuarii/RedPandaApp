@@ -6,7 +6,7 @@
     <div class="col-12">
       <div class="card d-flex justify-content-center align-items-center card-grid shadow-lg position-relative">
         <h1>GAMBAR</h1>
-        <div class="border rounded-4 p-4 w-75 bg-white shadow d-flex justify-content-center align-content-center position-absolute top-100 start-50 translate-middle">
+        <div class="unit border rounded-4 p-4 bg-white shadow d-flex justify-content-center align-content-center position-absolute top-100 start-50 translate-middle">
           <div class="d-flex">
             {% for unit in units %}
             <form action="" class="me-2">
@@ -44,7 +44,7 @@
                 <form action="">
                   <input type="hidden" name="unit" value="{{mesin.nama_unit_id_id}}" />
                   <input type="hidden" name="mesin" value="{{mesin.id}}" />
-                  <button type="submit" class="btn"><i class="bi-arrow-right-circle-fill btn-cost text-secondary"></i></button>
+                  <button type="submit" class="btn"><i class="bi-arrow-right-circle-fill btn-cost"></i></button>
                 </form>
               </td>
             </tr>
@@ -85,34 +85,34 @@
         {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
         <div class="mb-3 row">
           <label for="inputPassword" class="col-sm-4 col-form-label">SFC 50% DMN</label>
-          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_50" value="{{costs.sfc_50|floatformat:"-3" }} Liter/kWh" disabled /></div>
+          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_50" value="{{costs.sfc_50|floatformat:'-3' }} Liter/kWh" disabled /></div>
         </div>
         <div class="mb-3 row">
           <label for="inputPassword" class="col-sm-4 col-form-label">SFC 75% DMN</label>
-          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_75" value="{{costs.sfc_75|floatformat:"-3" }} Liter/kWh" disabled /></div>
+          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_75" value="{{costs.sfc_75|floatformat:'-3' }} Liter/kWh" disabled /></div>
         </div>
         <div class="mb-3 row">
           <label for="inputPassword" class="col-sm-4 col-form-label">SFC 100% DMN</label>
-          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_100" value="{{costs.sfc_100|floatformat:"-3" }} Liter/kWh" disabled /></div>
+          <div class="col-sm-6"><input type="text" class="form-control" name="sfc_100" value="{{costs.sfc_100|floatformat:'-3' }} Liter/kWh" disabled /></div>
         </div>
         {% endif %}
         <div class="mb-3 row">
           <label for="inputPassword" class="col-sm-4 col-form-label">Susut Trafo</label>
-          <div class="col-sm-6"><input type="text" class="form-control" name="susut_trafo" value="{{costs.susut_trafo|floatformat:"0" }} kWh" disabled /></div>
+          <div class="col-sm-6"><input type="text" class="form-control" name="susut_trafo" value="{{costs.susut_trafo|floatformat:'0' }} kWh" disabled /></div>
         </div>
         <div class="mb-3 row">
           <label for="inputPassword" class="col-sm-4 col-form-label">Susut Jaringan</label>
-          <div class="col-sm-6"><input type="text" class="form-control" name="susut_jaringan" value="{{costs.susut_jaringan|floatformat:"0" }} kWh" disabled /></div>
+          <div class="col-sm-6"><input type="text" class="form-control" name="susut_jaringan" value="{{costs.susut_jaringan|floatformat:'0' }} kWh" disabled /></div>
         </div>
         <div class="position-absolute top-50 end-0 translate-middle-y border p-4 rounded-4 me-3">
           <div data-bs-toggle="modal" data-bs-target="#modalInputCost">
-            <i class="bi-plus-circle text-secondary btn-nav"></i>
+            <i class="bi-plus-circle btn-nav" data-bs-toggle="tooltip" data-bs-placement="right" title="Input Cost"></i>
           </div>
-          <div class="my-3">
-            <i class="bi-input-cursor text-secondary btn-nav"></i>
+          <div class="my-3" data-bs-toggle="modal" data-bs-target="#modalUpdateCost">
+            <i class="bi-input-cursor btn-nav" data-bs-toggle="tooltip" data-bs-placement="right" title="Update Cost"></i>
           </div>
-          <div>
-            <i class="bi-trash3 text-secondary btn-nav"></i>
+          <div data-bs-toggle="modal" data-bs-target="#modalDeleteCost">
+            <i class="bi-trash3 btn-nav" data-bs-toggle="tooltip" data-bs-placement="right" title="Delete Cost"></i>
           </div>
         </div>
       </div>
@@ -124,74 +124,66 @@
           {% if mesin.0.is_sewa == False %}
           <input type="hidden" name="mesin_id" value="{{mesin.0.id}}" />
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">Total Fix Cost</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">Total Fix Cost <span class="text-primary fw-bold">(Rp)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" id="inputPassword" name="fix_cost" />
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">Total Time Based V-Cost</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">Total Time Based V-Cost <span class="text-primary fw-bold">(Rp)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="time_base_vcost" id="inputPassword" />
             </div>
           </div>
           {% endif %} {% if mesin.0.is_sewa == True %}
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">Harga Sewa per kWh</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">Harga Sewa per kWh <span class="text-primary fw-bold">(Rp)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="harga_sewa" id="inputPassword" />
             </div>
           </div>
           {% endif %} {% if mesin.0.air == 'True' %}
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">Pajak Air Permukaan</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">Pajak Air Permukaan <span class="text-primary fw-bold">(Rp)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="pajak_air" id="inputPassword" />
             </div>
           </div>
           {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">SFC 50% DMN</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">SFC 50% DMN <span class="text-primary fw-bold">(Liter/kWh)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="sfc_50" id="inputPassword" />
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">SFC 75% DMN</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">SFC 75% DMN <span class="text-primary fw-bold">(Liter/kWh)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="sfc_75" id="inputPassword" />
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">SFC 100% DMN</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">SFC 100% DMN <span class="text-primary fw-bold">(Liter/kWh)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="sfc_100" id="inputPassword" />
             </div>
           </div>
           {% endif %}
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">Susut Trafo</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">Susut Trafo <span class="text-primary fw-bold">(kWh)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="susut_trafo" id="inputPassword" />
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">Susut Jaringan</label>
-            <div class="col-sm-6">
+            <label for="inputPassword" class="col-sm-5 col-form-label">Susut Jaringan <span class="text-primary fw-bold">(kWh)</span></label>
+            <div class="col-sm-7">
               <input type="number" step="any" class="form-control" name="susut_jaringan" id="inputPassword" />
             </div>
           </div>
           <div class="text-center">
             <input type="reset" class="btn btn-outline-secondary me-1" value="Reset" />
             <input type="submit" class="btn btn-outline-primary" name="first_input" value="Submit" />
-          </div>
-          <div class="position-absolute top-50 end-0 translate-middle-y border p-4 rounded-4 me-3">
-            <div class="mb-3">
-              <i class="bi-input-cursor text-secondary btn-nav"></i>
-            </div>
-            <div>
-              <i class="bi-trash3 text-secondary btn-nav"></i>
-            </div>
           </div>
         </div>
       </form>
@@ -219,59 +211,59 @@
             <div class="card shadow-lg p-4 position-relative">
               {% if mesin.0.is_sewa == False %}
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">Total Fix Cost</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">Total Fix Cost <span class="text-primary fw-bold">(Rp)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" id="inputPassword" name="fix_cost" />
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">Total Time Based V-Cost</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">Total Time Based V-Cost <span class="text-primary fw-bold">(Rp)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="time_base_vcost" id="inputPassword" />
                 </div>
               </div>
               {% endif %} {% if mesin.0.is_sewa == True %}
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">Harga Sewa per kWh</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">Harga Sewa per kWh <span class="text-primary fw-bold">(Rp)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="harga_sewa" id="inputPassword" />
                 </div>
               </div>
               {% endif %} {% if mesin.0.air == 'True' %}
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">Pajak Air Permukaan</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">Pajak Air Permukaan <span class="text-primary fw-bold">(Rp)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="pajak_air" id="inputPassword" />
                 </div>
               </div>
               {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 50% DMN</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 50% DMN <span class="text-primary fw-bold">(Liter/kWh)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="sfc_50" id="inputPassword" />
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 75% DMN</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 75% DMN <span class="text-primary fw-bold">(Liter/kWh)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="sfc_75" id="inputPassword" />
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 100% DMN</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">SFC 100% DMN <span class="text-primary fw-bold">(Liter/kWh)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="sfc_100" id="inputPassword" />
                 </div>
               </div>
               {% endif %}
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">Susut Trafo</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">Susut Trafo <span class="text-primary fw-bold">(kWh)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="susut_trafo" id="inputPassword" />
                 </div>
               </div>
               <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-5 col-form-label">Susut Jaringan</label>
+                <label for="inputPassword" class="col-sm-5 col-form-label">Susut Jaringan <span class="text-primary fw-bold">(kWh)</span></label>
                 <div class="col-sm-7">
                   <input type="number" step="any" class="form-control" name="susut_jaringan" id="inputPassword" />
                 </div>
@@ -287,5 +279,95 @@
     </div>
   </div>
   <!-- Akhir Modal Input  -->
+  <!-- Awal Modal Update  -->
+  <div class="modal fade" id="modalUpdateCost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white d-flex align-items-center">
+          <h5 class="modal-title me-3" id="exampleModalLabel">Update Data Cost {{mesin.0}}</h5>
+          <button type="button" class="btn-close text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="mesin_id" value="{{mesin.0.id}}" />
+            <div class="card shadow-lg p-4 position-relative">
+              {% if mesin.0.is_sewa == False %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Total Fix Cost</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="fix_cost" value="{{costs.fix_cost}}" />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Total Time Based V-Cost</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="time_base_vcost" value="{{costs.time_base_vcost}}" />
+                </div>
+              </div>
+              {% endif %} {% if mesin.0.is_sewa == True %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Harga Sewa per kWh</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="harga_sewa" value="{{costs.harga_sewa}}" />
+                </div>
+              </div>
+              {% endif %} {% if mesin.0.air == 'True' %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Pajak Air Permukaan</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="pajak_air" value="{{costs.pajak_air}}" />
+                </div>
+              </div>
+              {% endif %} {% if mesin.0.surya == 'False' and mesin.0.air == 'False' %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">SFC 50% DMN</label>
+                <div class="col-sm-6"><input type="text" class="form-control" name="sfc_50" value="{{costs.sfc_50}}" /></div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">SFC 75% DMN</label>
+                <div class="col-sm-6"><input type="text" class="form-control" name="sfc_75" value="{{costs.sfc_75}}" /></div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">SFC 100% DMN</label>
+                <div class="col-sm-6"><input type="text" class="form-control" name="sfc_100" value="{{costs.sfc_100}}" /></div>
+              </div>
+              {% endif %}
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Susut Trafo</label>
+                <div class="col-sm-6"><input type="text" class="form-control" name="susut_trafo" value="{{costs.susut_trafo}}" /></div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Susut Jaringan</label>
+                <div class="col-sm-6"><input type="text" class="form-control" name="susut_jaringan" value="{{costs.susut_jaringan}}" /></div>
+              </div>
+              <div class="text-center">
+                <input type="reset" class="btn btn-outline-secondary me-1" value="Reset" />
+                <input type="submit" class="btn btn-outline-primary" name="update_cost" value="Submit" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Update  -->
+  <!-- Awal Modal Delete  -->
+  <div class="modal fade" id="modalDeleteCost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center position-relative">
+          <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+          <i class="bi-trash3 text-danger"></i>
+          <h6>Apakah Anda yakin?</h6>
+          <div class="text-center">
+            <div class="btn btn-outline-secondary me-1" data-bs-dismiss="modal">Back</div>
+            <a href="delete/{{costs.id}}" class="btn btn-outline-primary">Yes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Delete  -->
 </main>
 {% endblock content %}

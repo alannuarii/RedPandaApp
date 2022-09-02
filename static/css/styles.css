@@ -150,8 +150,11 @@ body {
   width: 100%;
 }
 .home .card-grid {
-  height: 740px;
+  height: 560px;
   margin-bottom: 50px;
+}
+.home .unit {
+  width: 85%;
 }
 .home .chart {
   height: 400px;
@@ -168,6 +171,12 @@ body {
 .home .btn-nav {
   cursor: pointer;
   font-size: 20px;
+}
+.home i:hover {
+  color: #ee2110;
+}
+.home #modalDeleteCost i {
+  font-size: 70px;
 }
 
 /* FEEDER */
