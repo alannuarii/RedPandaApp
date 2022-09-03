@@ -300,6 +300,10 @@ def rencana_har(request):
 
         if request.method == 'POST':
             try:
+                check_har = Har.objects.filter(tanggal_jumat = request.POST['tanggal_jumat'])
+                if check_har:
+                    check_har.delete()
+
                 result = dict(request.POST.lists())
                 for i in range(len(mesins)):
                     tanggal_jumat = result['tanggal_jumat'][0]
