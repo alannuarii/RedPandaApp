@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from redpanda.models import Cost, Unit, Mesin, Har
+from redpanda.models import Cost, Feeder, Unit, Mesin, Har
 import pandas as pd
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta
@@ -238,13 +238,18 @@ def forecast_feeder(request):
 @login_required(login_url='sign_in')
 def data_feeder(request):
     
-    if request.method == 'POST':
+    if 'input_data' in request.POST:
         try:
             feeder = request.FILES['feeder']
             if not feeder.name.endswith('xlsx'):
                 messages.warning(request, 'Format file harus .xlsx')
                 return redirect('/feeder/data')
+
             data_excel = pd.read_excel(feeder)
+            check_data = pd.read_sql("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(data_excel['tanggal'][0]), con=engine)
+            if len(check_data) != 0:
+                pd.read_sql("DELETE FROM redpanda_feeder WHERE tanggal='{}'".format(data_excel['tanggal'][0]), con=engine)
+
             data_excel.to_sql(name='redpanda_feeder', con=engine, if_exists='append', index=False)
         except Exception as error:
             print(error)
@@ -253,7 +258,7 @@ def data_feeder(request):
         query = request.GET.get('tanggal')
         tanggal = datetime.strptime(query, '%Y-%m-%d')
     
-        feeder_sql = pd.read_sql("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(query), con=engine).iloc[0:24,2:]
+        feeder_sql = pd.read_sql("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(query), con=engine).iloc[0:24,1:]
         total = feeder_sql.iloc[0:24,1:16].sum(axis=1)
         pltd_tahuna = feeder_sql.iloc[0:24,1:7].sum(axis=1)
         pltd_petta = feeder_sql.iloc[0:24,7:11].sum(axis=1)
