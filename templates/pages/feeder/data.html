@@ -4,6 +4,11 @@
 <div class="nav-scroller bg-body shadow-sm fixed-top">
   <nav class="nav" aria-label="Secondary navigation">
     <div class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUploadDataFeeder"><i class="bi-upload"></i> Upload</div>
+    {% if chart %}
+    <div class="nav-link" data-bs-toggle="modal" data-bs-target="#modalChartFeeder"><i class="bi-bar-chart-line"></i> Chart</div>
+    {% else %}
+    <div class="nav-link" data-bs-toggle="modal" data-bs-target="#modalNoDataFeeder"><i class="bi-bar-chart-line"></i> Chart</div>
+    {% endif %}
     <!-- <a class="nav-link" href="#">
       Friends
       <span class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
@@ -85,6 +90,34 @@
       {% endif %}
     </div>
   </div>
+  <!-- Awal Modal Input  -->
+  <div class="modal fade" id="modalChartFeeder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white d-flex align-items-center">
+          <h5 class="modal-title me-3" id="exampleModalLabel">Grafik Beban Feeder Tanggal {{tanggal|date:'d-m-Y'}}</h5>
+          <button type="button" class="btn-close text-bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+          <img src="data:image/png;base64, {{chart|safe}}" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Input  -->
+  <!-- Awal Modal Warning  -->
+  <div class="modal fade" id="modalNoDataFeeder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center position-relative">
+          <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+          <i class="bi-exclamation-triangle-fill text-warning"></i>
+          <h4>Pilih tanggal terlebih dahulu</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Akhir Modal Warning  -->
 </main>
 <!-- Awal Offcanvas Upload  -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasUploadDataFeeder" aria-labelledby="offcanvasRightLabel">
@@ -110,4 +143,5 @@
   </div>
 </div>
 <!-- Akhir Offcanvas Upload  -->
+
 {% endblock content %}

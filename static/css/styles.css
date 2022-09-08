@@ -92,6 +92,12 @@ body {
 }
 
 /* NAVBAR  */
+.navbar .nama {
+  width: 200px;
+}
+.navbar li {
+  cursor: pointer;
+}
 .navbar .navbar-brand span {
   font-size: 2rem;
   font-family: "Cooper Black", sans-serif;
@@ -191,6 +197,9 @@ body {
 .data-feeder {
   padding-top: 130px;
   width: 100%;
+}
+.data-feeder #modalNoDataFeeder i {
+  font-size: 70px;
 }
 /* Forecast Feeder  */
 .forecast-feeder {

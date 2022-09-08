@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'redpanda',
     'django.contrib.humanize',
     'django_cleanup.apps.CleanupConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,4 @@ BATON = {
     'SITE_TITLE' : 'RedPanda',
     'INDEX_TITLE' : 'Site Administration',
 }
+

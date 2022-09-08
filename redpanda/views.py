@@ -6,7 +6,7 @@ from redpanda.models import Cost, Feeder, Unit, Mesin, Har
 import pandas as pd
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta
-from redpanda.utils import getfriday
+from redpanda.utils import getfriday, get_plot
 
 
 # Create Engine 
@@ -206,10 +206,10 @@ def forecast_feeder(request):
     day21 = today + timedelta(days=-21)
     day28 = today + timedelta(days=-28)
 
-    data1 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day7.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
-    data2 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day14.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
-    data3 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day21.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
-    data4 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day28.strftime('%Y-%m-%d')), con=engine).iloc[0:24,2:19]
+    data1 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day7.strftime('%Y-%m-%d')), con=engine).iloc[0:24,1:19]
+    data2 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day14.strftime('%Y-%m-%d')), con=engine).iloc[0:24,1:19]
+    data3 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day21.strftime('%Y-%m-%d')), con=engine).iloc[0:24,1:19]
+    data4 = pd.read_sql_query("SELECT * FROM redpanda_feeder WHERE tanggal='{}'".format(day28.strftime('%Y-%m-%d')), con=engine).iloc[0:24,1:19]
 
     list_data = [data1,data2,data3,data4]
     data_concat = pd.concat(list_data,keys=range(len(list_data))).groupby(level=1)
@@ -270,16 +270,23 @@ def data_feeder(request):
         feeder_sql.insert(20,'Sub Total Lesabe',pltd_lesabe)
         feeder_sql.insert(21,'Total',total)
         rows = list(feeder_sql.values.tolist())
+        
+        # Sumbu x,y untuk chart 
+        x = [x[0] for x in rows]
+        y = [y[-1] for y in rows]
+        chart = get_plot(x,y)
 
     else:
         rows = None
         tanggal = None
+        chart = None
 
     context={
         'title':'Data Feeder | RedPanda',
         'active_feeder':'active',
         'rows':rows,
         'tanggal':tanggal,
+        'chart':chart,
         }
     return render(request, 'pages/feeder/data.html', context)
 
