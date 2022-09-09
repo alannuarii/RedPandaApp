@@ -91,6 +91,23 @@ body {
   margin-top: 30px;
 }
 
+/* CHANGE PASSWORD */
+.change-password {
+  width: 100%;
+  height: 100vh;
+}
+.change-password a {
+  text-decoration: none;
+  color: var(--color-default);
+}
+.change-password .bi-house {
+  font-size: 20px;
+  cursor: pointer;
+}
+.change-password a:hover {
+  color: #ee2110;
+}
+
 /* NAVBAR  */
 .navbar .nama {
   width: 200px;
